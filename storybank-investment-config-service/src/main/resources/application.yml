@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: investment-config-service
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+config:
+  git:
+    repo-url: https://raw.githubusercontent.com/jagzapsagar/storybank-investment-config-repo/main
