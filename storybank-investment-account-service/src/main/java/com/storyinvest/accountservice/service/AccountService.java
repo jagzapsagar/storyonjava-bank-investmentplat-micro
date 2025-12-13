@@ -12,6 +12,7 @@ import com.storyinvest.accountservice.dto.AccountResponseDTO;
 import com.storyinvest.accountservice.dto.BalanceUpdateRequest;
 import com.storyinvest.accountservice.entity.AccountEntity;
 import com.storyinvest.accountservice.exception.AccountNotFoundException;
+import com.storyinvest.accountservice.exception.InsufficientBalanceException;
 import com.storyinvest.accountservice.mapper.AccountMapper;
 import com.storyinvest.accountservice.repository.AccountRepository;
 
@@ -111,7 +112,9 @@ public class AccountService {
 
 			if (req.getType().equalsIgnoreCase("DEBIT")) {
 				if (currentBalance < req.getAmount()) {
-					throw new RuntimeException("Insufficient balance");
+					throw new InsufficientBalanceException(
+				            "Insufficient balance. Available: " + currentBalance
+				        );
 				}
 				acc.setBalance(currentBalance - req.getAmount());
 			} else if (req.getType().equalsIgnoreCase("CREDIT")) {
