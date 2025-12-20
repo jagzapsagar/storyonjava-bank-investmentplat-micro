@@ -17,6 +17,8 @@ public class TransactionMapper {
 		entity.setTransactionType(dto.getTransactionType());
 		entity.setAmount(dto.getAmount());
 		entity.setDescription(dto.getDescription());
+		entity.setCategory(dto.getCategory());
+
 
 		return entity;
 	}
@@ -30,6 +32,8 @@ public class TransactionMapper {
 		dto.setTransactionType(entity.getTransactionType());
 		dto.setAmount(entity.getAmount());
 		dto.setDescription(entity.getDescription());
+		dto.setCategory(entity.getCategory());
+
 
 		return dto;
 	}

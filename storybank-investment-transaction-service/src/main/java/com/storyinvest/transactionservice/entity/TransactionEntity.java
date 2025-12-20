@@ -21,6 +21,8 @@ public class TransactionEntity {
     private String transactionType;  // CREDIT / DEBIT
 
     private Double amount;           // Transaction amount
+    
+    private String category;         // INVESTMENT/ SALARY/ BILL_PAYMENT/ TRANSFER/ WITHDRAWAL
 
     private String description;      // Optional remark
 
@@ -34,13 +36,15 @@ public class TransactionEntity {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public TransactionEntity(Long id, Long accountId, String transactionType, Double amount, String description,
-			Double closingBalance, LocalDateTime transactionTime, LocalDateTime createdAt, LocalDateTime updatedAt) {
+	public TransactionEntity(Long id, Long accountId, String transactionType, Double amount, String category,
+			String description, Double closingBalance, LocalDateTime transactionTime, LocalDateTime createdAt,
+			LocalDateTime updatedAt) {
 		super();
 		this.id = id;
 		this.accountId = accountId;
 		this.transactionType = transactionType;
 		this.amount = amount;
+		this.category = category;
 		this.description = description;
 		this.closingBalance = closingBalance;
 		this.transactionTime = transactionTime;
@@ -70,6 +74,12 @@ public class TransactionEntity {
 	}
 	public void setAmount(Double amount) {
 		this.amount = amount;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	public String getDescription() {
 		return description;
@@ -104,10 +114,12 @@ public class TransactionEntity {
 	@Override
 	public String toString() {
 		return "TransactionEntity [id=" + id + ", accountId=" + accountId + ", transactionType=" + transactionType
-				+ ", amount=" + amount + ", description=" + description + ", closingBalance=" + closingBalance
-				+ ", transactionTime=" + transactionTime + ", createdAt=" + createdAt + ", updatedAt=" + updatedAt
-				+ "]";
+				+ ", amount=" + amount + ", category=" + category + ", description=" + description + ", closingBalance="
+				+ closingBalance + ", transactionTime=" + transactionTime + ", createdAt=" + createdAt + ", updatedAt="
+				+ updatedAt + "]";
 	}
+	
+	
     
     
 

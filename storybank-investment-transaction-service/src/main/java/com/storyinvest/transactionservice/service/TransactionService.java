@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.storyinvest.transactionservice.dto.AccountResponseDTO;
 import com.storyinvest.transactionservice.dto.BalanceUpdateRequest;
+import com.storyinvest.transactionservice.dto.TransactionEvent;
 import com.storyinvest.transactionservice.dto.TransactionRequestDTO;
 import com.storyinvest.transactionservice.dto.TransactionResponseDTO;
 import com.storyinvest.transactionservice.entity.TransactionEntity;
@@ -20,6 +21,7 @@ import com.storyinvest.transactionservice.exception.InsufficientBalanceException
 import com.storyinvest.transactionservice.exception.InvalidTransactionTypeException;
 import com.storyinvest.transactionservice.mapper.TransactionMapper;
 import com.storyinvest.transactionservice.repository.TransactionRepository;
+import com.storyinvest.transactionservice.service.kafka.TransactionEventProducer;
 
 @Service
 public class TransactionService {
@@ -28,6 +30,9 @@ public class TransactionService {
 	private final TransactionRepository transactionRepository;
 	@Autowired
 	private final TransactionMapper transactionMapper;
+	@Autowired
+	private TransactionEventProducer transactionEventProducer;
+
 
 	@Autowired
 	private RestTemplate restTemplate;
@@ -99,6 +104,18 @@ public class TransactionService {
 		// 3. Set transaction date (very important)
 		TransactionResponseDTO tdto = transactionMapper.toDTO(saved);
 		tdto.setTransactionDate(LocalDateTime.now());
+		
+		// 2. Publish Kafka Event
+	    TransactionEvent event = new TransactionEvent();
+	    event.setTransactionId(saved.getId());
+	    event.setAccountId(saved.getAccountId());
+	    event.setTransactionType(saved.getTransactionType());
+	    event.setAmount(saved.getAmount());
+	    event.setCategory(saved.getCategory());
+	    event.setTransactionDate(saved.getCreatedAt());
+
+	    transactionEventProducer.publishTransaction(event);
+		
 		return tdto;
 	}
 

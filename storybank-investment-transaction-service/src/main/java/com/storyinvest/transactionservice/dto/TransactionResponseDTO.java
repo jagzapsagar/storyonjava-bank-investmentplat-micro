@@ -8,19 +8,21 @@ public class TransactionResponseDTO {
     private Long accountId;
     private String transactionType;
     private Double amount;
+    private String category;
     private String description;
     private LocalDateTime transactionDate;
 	public TransactionResponseDTO() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public TransactionResponseDTO(Long id, Long accountId, String transactionType, Double amount, String description,
-			LocalDateTime transactionDate) {
+	public TransactionResponseDTO(Long id, Long accountId, String transactionType, Double amount, String category,
+			String description, LocalDateTime transactionDate) {
 		super();
 		this.id = id;
 		this.accountId = accountId;
 		this.transactionType = transactionType;
 		this.amount = amount;
+		this.category = category;
 		this.description = description;
 		this.transactionDate = transactionDate;
 	}
@@ -48,6 +50,12 @@ public class TransactionResponseDTO {
 	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
+	}
 	public String getDescription() {
 		return description;
 	}
@@ -63,8 +71,10 @@ public class TransactionResponseDTO {
 	@Override
 	public String toString() {
 		return "TransactionResponseDTO [id=" + id + ", accountId=" + accountId + ", transactionType=" + transactionType
-				+ ", amount=" + amount + ", description=" + description + ", transactionDate=" + transactionDate + "]";
+				+ ", amount=" + amount + ", category=" + category + ", description=" + description
+				+ ", transactionDate=" + transactionDate + "]";
 	}
+	
     
     
 
