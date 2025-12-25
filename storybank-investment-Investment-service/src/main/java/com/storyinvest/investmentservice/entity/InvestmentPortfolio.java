@@ -12,34 +12,35 @@ import jakarta.persistence.Table;
 @Table(name = "investment_portfolio")
 public class InvestmentPortfolio {
 	
-	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+		@Id
+	    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	    private Long id;
 
-    private Long userId;
+	    private Long transactionId;
+	    private Long accountId;
 
-    private Double totalInvestedAmount;
+	    private Double investedAmount;
 
-    private Double currentValue;
+	    private String investmentType;   // MUTUAL_FUND / STOCK / GOLD
+	    private String transactionType;  // CREDIT / DEBIT
 
-    private Double totalReturns;
-
-    private LocalDateTime lastUpdated;
+	    private LocalDateTime investmentDate;
 
 	public InvestmentPortfolio() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public InvestmentPortfolio(Long id, Long userId, Double totalInvestedAmount, Double currentValue,
-			Double totalReturns, LocalDateTime lastUpdated) {
+	public InvestmentPortfolio(Long id, Long transactionId, Long accountId, Double investedAmount,
+			String investmentType, String transactionType, LocalDateTime investmentDate) {
 		super();
 		this.id = id;
-		this.userId = userId;
-		this.totalInvestedAmount = totalInvestedAmount;
-		this.currentValue = currentValue;
-		this.totalReturns = totalReturns;
-		this.lastUpdated = lastUpdated;
+		this.transactionId = transactionId;
+		this.accountId = accountId;
+		this.investedAmount = investedAmount;
+		this.investmentType = investmentType;
+		this.transactionType = transactionType;
+		this.investmentDate = investmentDate;
 	}
 
 	public Long getId() {
@@ -50,53 +51,62 @@ public class InvestmentPortfolio {
 		this.id = id;
 	}
 
-	public Long getUserId() {
-		return userId;
+	public Long getTransactionId() {
+		return transactionId;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setTransactionId(Long transactionId) {
+		this.transactionId = transactionId;
 	}
 
-	public Double getTotalInvestedAmount() {
-		return totalInvestedAmount;
+	public Long getAccountId() {
+		return accountId;
 	}
 
-	public void setTotalInvestedAmount(Double totalInvestedAmount) {
-		this.totalInvestedAmount = totalInvestedAmount;
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
 	}
 
-	public Double getCurrentValue() {
-		return currentValue;
+	public Double getInvestedAmount() {
+		return investedAmount;
 	}
 
-	public void setCurrentValue(Double currentValue) {
-		this.currentValue = currentValue;
+	public void setInvestedAmount(Double investedAmount) {
+		this.investedAmount = investedAmount;
 	}
 
-	public Double getTotalReturns() {
-		return totalReturns;
+	public String getInvestmentType() {
+		return investmentType;
 	}
 
-	public void setTotalReturns(Double totalReturns) {
-		this.totalReturns = totalReturns;
+	public void setInvestmentType(String investmentType) {
+		this.investmentType = investmentType;
 	}
 
-	public LocalDateTime getLastUpdated() {
-		return lastUpdated;
+	public String getTransactionType() {
+		return transactionType;
 	}
 
-	public void setLastUpdated(LocalDateTime lastUpdated) {
-		this.lastUpdated = lastUpdated;
+	public void setTransactionType(String transactionType) {
+		this.transactionType = transactionType;
+	}
+
+	public LocalDateTime getInvestmentDate() {
+		return investmentDate;
+	}
+
+	public void setInvestmentDate(LocalDateTime investmentDate) {
+		this.investmentDate = investmentDate;
 	}
 
 	@Override
 	public String toString() {
-		return "InvestmentPortfolio [id=" + id + ", userId=" + userId + ", totalInvestedAmount=" + totalInvestedAmount
-				+ ", currentValue=" + currentValue + ", totalReturns=" + totalReturns + ", lastUpdated=" + lastUpdated
-				+ "]";
+		return "InvestmentPortfolio [id=" + id + ", transactionId=" + transactionId + ", accountId=" + accountId
+				+ ", investedAmount=" + investedAmount + ", investmentType=" + investmentType + ", transactionType="
+				+ transactionType + ", investmentDate=" + investmentDate + "]";
 	}
-    
+
+	
     
 
 }

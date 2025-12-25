@@ -20,6 +20,8 @@ public class KafkaConsumer {
 	
 	@Autowired
 	private InvestmentPortfolioRepository repository;
+	@Autowired
+	private InvestmentPortfolioService portfolioService;
 	
 	private final ObjectMapper objectMapper;
 
@@ -51,10 +53,11 @@ public class KafkaConsumer {
 	            if ("INVESTMENT".equalsIgnoreCase(event.getCategory())) {
 	                System.out.println("💰 Investment transaction received");
 	                // TODO: save to portfolio / update returns
+	                portfolioService.processInvestment(event);
 	            }
 	        } catch (Exception e) {
 	            e.printStackTrace();
-	        	System.out.println("-------------Catch Exception");
+	            System.err.println("❌ Failed to process Kafka message: " + message);
 	        }
 	    }
 

@@ -8,6 +8,5 @@ import com.storyinvest.investmentservice.entity.InvestmentPortfolio;
 
 public interface InvestmentPortfolioRepository extends JpaRepository<InvestmentPortfolio, Long> {
 
-    Optional<InvestmentPortfolio> findByUserId(Long userId);
 
 }
