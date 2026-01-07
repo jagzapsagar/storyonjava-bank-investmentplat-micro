@@ -50,11 +50,17 @@ public class KafkaConsumer {
 
 	            System.out.println("✅ Parsed Event: " + event);
 
-	            if ("INVESTMENT".equalsIgnoreCase(event.getCategory())) {
-	                System.out.println("💰 Investment transaction received");
+	            if (!"INVESTMENT".equalsIgnoreCase(event.getCategory())) {
+	                
 	                // TODO: save to portfolio / update returns
-	                portfolioService.processInvestment(event);
+	                return;
 	            }
+	            System.out.println("💰 Investment transaction received");
+	            portfolioService.processInvestment(event);
+	            
+	            
+	            
+	            
 	        } catch (Exception e) {
 	            e.printStackTrace();
 	            System.err.println("❌ Failed to process Kafka message: " + message);

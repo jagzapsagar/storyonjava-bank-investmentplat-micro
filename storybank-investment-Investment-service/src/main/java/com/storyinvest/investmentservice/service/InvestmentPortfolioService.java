@@ -1,5 +1,8 @@
 package com.storyinvest.investmentservice.service;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -7,27 +10,45 @@ import com.storyinvest.investmentservice.dto.TransactionEvent;
 import com.storyinvest.investmentservice.entity.InvestmentPortfolio;
 import com.storyinvest.investmentservice.repository.InvestmentPortfolioRepository;
 
+import jakarta.transaction.Transactional;
+
 @Service
 public class InvestmentPortfolioService {
 
-    @Autowired
-    private InvestmentPortfolioRepository repository;
+	@Autowired
+	private InvestmentPortfolioRepository repository;
 
-    public void processInvestment(TransactionEvent event) {
+	@Transactional
+	public void processInvestment(TransactionEvent event) {
 
-        InvestmentPortfolio portfolio = new InvestmentPortfolio();
+		if (!"INVESTMENT".equalsIgnoreCase(event.getCategory())) {
+			return; // ignore non-investment
+		}
 
-        portfolio.setTransactionId(event.getTransactionId());
-        portfolio.setAccountId(event.getAccountId());
-        portfolio.setInvestedAmount(event.getAmount());
-        portfolio.setTransactionType(event.getTransactionType());
-        portfolio.setInvestmentType("DEFAULT"); // later dynamic
-        portfolio.setInvestmentDate(event.getTransactionDate());
+		InvestmentPortfolio portfolio = repository.findByAccountId(event.getAccountId()).orElseGet(() -> {
+			InvestmentPortfolio p = new InvestmentPortfolio();
+			p.setAccountId(event.getAccountId());
+			p.setInvestedAmount(0.0);
+			return p;
+		});
 
-        repository.save(portfolio);
+		if ("CREDIT".equalsIgnoreCase(event.getTransactionType())) {
+			portfolio.setInvestedAmount(portfolio.getInvestedAmount() + event.getAmount());
+		} else if ("DEBIT".equalsIgnoreCase(event.getTransactionType())) {
+			portfolio.setInvestedAmount(portfolio.getInvestedAmount() - event.getAmount());
+		}
 
-        System.out.println("✅ Investment saved for transaction: "
-                + event.getTransactionId());
+		// portfolio.setLastUpdated(LocalDateTime.now());
+		repository.save(portfolio);
+	}
+
+	// REST APIs
+    public InvestmentPortfolio getInvestmentsByAccount(Long accountId) {
+        return repository.findByAccountId(accountId).orElse(null);
+    }
+
+    public InvestmentPortfolio getInvestmentByTransaction(Long transactionId) {
+        return repository.findByTransactionId(transactionId)
+                .orElseThrow(() -> new RuntimeException("Investment not found"));
     }
 }
-

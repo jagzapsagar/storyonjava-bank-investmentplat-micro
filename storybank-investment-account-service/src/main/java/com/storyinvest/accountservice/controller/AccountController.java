@@ -36,11 +36,13 @@ public class AccountController {
     // Get Account by ID
     @GetMapping("/{id}")
     public ResponseEntity<AccountResponseDTO> getAccountById(@PathVariable Long id) {
-        AccountResponseDTO account = accountService.getAccountById(id);
-        if (account != null) {
-            return ResponseEntity.ok(account);
-        }
-        return ResponseEntity.notFound().build();
+		/*
+		 * AccountResponseDTO account = accountService.getAccountById(id); if (account
+		 * != null) { return ResponseEntity.ok(account); } return
+		 * ResponseEntity.notFound().build();
+		 */
+    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+
     }
 
     // Get All Accounts

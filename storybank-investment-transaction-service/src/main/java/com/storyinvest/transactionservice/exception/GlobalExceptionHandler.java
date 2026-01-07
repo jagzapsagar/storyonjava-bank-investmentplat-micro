@@ -9,6 +9,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.storyinvest.transactionservice.dto.ErrorResponse;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -69,6 +71,18 @@ public class GlobalExceptionHandler {
         error.put("error", "Internal Server Error");
         error.put("message", ex.getMessage());
         return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+    @ExceptionHandler(AccountServiceUnavailableException.class)
+    public ResponseEntity<ErrorResponse> handleAccountServiceDown(
+            AccountServiceUnavailableException ex) {
+
+        return ResponseEntity
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(new ErrorResponse(
+                        "ACCOUNT_SERVICE_DOWN",
+                        ex.getMessage()
+                ));
     }
 
 }
