@@ -22,62 +22,63 @@ import com.storyinvest.accountservice.service.AccountService;
 @RestController
 @RequestMapping("/accounts")
 public class AccountController {
-	
+
 	@Autowired
-    private AccountService accountService;
+	private AccountService accountService;
 
-    // Create Account
-    @PostMapping
-    public ResponseEntity<AccountResponseDTO> createAccount(@RequestBody AccountRequestDTO dto) {
-        AccountResponseDTO created = accountService.createAccount(dto);
-        return new ResponseEntity<>(created, HttpStatus.CREATED);
-    }
+	// Create Account
+	@PostMapping
+	public ResponseEntity<AccountResponseDTO> createAccount(@RequestBody AccountRequestDTO dto) {
+		AccountResponseDTO created = accountService.createAccount(dto);
+		return new ResponseEntity<>(created, HttpStatus.CREATED);
+	}
 
-    // Get Account by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<AccountResponseDTO> getAccountById(@PathVariable Long id) {
-		/*
-		 * AccountResponseDTO account = accountService.getAccountById(id); if (account
-		 * != null) { return ResponseEntity.ok(account); } return
-		 * ResponseEntity.notFound().build();
-		 */
-    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	// Get Account by ID
+	@GetMapping("/{id}")
+	public ResponseEntity<AccountResponseDTO> getAccountById(@PathVariable Long id) {
 
-    }
+		AccountResponseDTO account = accountService.getAccountById(id);
+		if (account != null) {
+			return ResponseEntity.ok(account);
+		}
+		return ResponseEntity.notFound().build();
 
-    // Get All Accounts
-    @GetMapping
-    public ResponseEntity<List<AccountResponseDTO>> getAllAccounts() {
-        List<AccountResponseDTO> accounts = accountService.getAllAccounts();
-        return ResponseEntity.ok(accounts);
-    }
+		// This is for testing Retry and CircuitBreaker of transaction service
+		// return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 
-    // Update Account
-    @PutMapping("/{id}")
-    public ResponseEntity<AccountResponseDTO> updateAccount(@PathVariable Long id,
-                                                            @RequestBody AccountRequestDTO dto) {
-        AccountResponseDTO updated = accountService.updateAccount(id, dto);
-        if (updated != null) {
-            return ResponseEntity.ok(updated);
-        }
-        return ResponseEntity.notFound().build();
-    }
+	}
 
-    // Delete Account
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
-        boolean deleted = accountService.deleteAccount(id);
-        if (deleted) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
-    }
-    
-    @PutMapping("/update-balance")
-    public ResponseEntity<AccountResponseDTO> updateBalance(@RequestBody BalanceUpdateRequest req) {
-        AccountResponseDTO updated = accountService.updateBalance(req);
-        return ResponseEntity.ok(updated);
-    }
+	// Get All Accounts
+	@GetMapping
+	public ResponseEntity<List<AccountResponseDTO>> getAllAccounts() {
+		List<AccountResponseDTO> accounts = accountService.getAllAccounts();
+		return ResponseEntity.ok(accounts);
+	}
 
+	// Update Account
+	@PutMapping("/{id}")
+	public ResponseEntity<AccountResponseDTO> updateAccount(@PathVariable Long id, @RequestBody AccountRequestDTO dto) {
+		AccountResponseDTO updated = accountService.updateAccount(id, dto);
+		if (updated != null) {
+			return ResponseEntity.ok(updated);
+		}
+		return ResponseEntity.notFound().build();
+	}
+
+	// Delete Account
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteAccount(@PathVariable Long id) {
+		boolean deleted = accountService.deleteAccount(id);
+		if (deleted) {
+			return ResponseEntity.noContent().build();
+		}
+		return ResponseEntity.notFound().build();
+	}
+
+	@PutMapping("/update-balance")
+	public ResponseEntity<AccountResponseDTO> updateBalance(@RequestBody BalanceUpdateRequest req) {
+		AccountResponseDTO updated = accountService.updateBalance(req);
+		return ResponseEntity.ok(updated);
+	}
 
 }
