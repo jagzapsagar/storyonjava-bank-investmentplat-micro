@@ -1,4 +1,4 @@
-package com.storyinvest.investmentservice.dto;
+package com.storyinvest.investment.dto;
 
 import java.time.LocalDateTime;
 

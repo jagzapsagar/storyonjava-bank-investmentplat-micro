@@ -1,4 +1,4 @@
-package com.storyinvest.investmentservice.service;
+package com.storyinvest.investment.service;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.storyinvest.investmentservice.dto.TransactionEvent;
-import com.storyinvest.investmentservice.entity.InvestmentPortfolio;
-import com.storyinvest.investmentservice.repository.InvestmentPortfolioRepository;
+import com.storyinvest.investment.repository.InvestmentPortfolioRepository;
+import com.storyinvest.investment.dto.TransactionEvent;
+import com.storyinvest.investment.entity.InvestmentPortfolio;
 
 import jakarta.transaction.Transactional;
 

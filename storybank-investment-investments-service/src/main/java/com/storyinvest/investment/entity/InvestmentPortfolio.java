@@ -1,4 +1,4 @@
-package com.storyinvest.investmentservice.entity;
+package com.storyinvest.investment.entity;
 
 import java.time.LocalDateTime;
 

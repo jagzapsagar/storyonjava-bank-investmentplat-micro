@@ -1,15 +1,12 @@
-package com.storyinvest.investmentservice.controller;
-
-import java.util.List;
+package com.storyinvest.investment.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.storyinvest.investmentservice.entity.InvestmentPortfolio;
-import com.storyinvest.investmentservice.service.InvestmentPortfolioService;
+import com.storyinvest.investment.entity.InvestmentPortfolio;
+import com.storyinvest.investment.service.InvestmentPortfolioService;
 
 @RestController
 @RequestMapping("/investments")
@@ -30,4 +27,3 @@ public class InvestmentController {
         return service.getInvestmentByTransaction(transactionId);
     }
 }
-
