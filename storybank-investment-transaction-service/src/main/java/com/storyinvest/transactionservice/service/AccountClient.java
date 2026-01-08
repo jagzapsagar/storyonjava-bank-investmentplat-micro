@@ -33,7 +33,7 @@ public class AccountClient {
 
     public AccountResponseDTO getAccountFallback(Long accountId, Exception ex) {
         throw new AccountServiceUnavailableException(
-            "Account service is unavailable. Please try again later."
+            "---------- Account service is unavailable. Please try again later."
         );
     }
 
