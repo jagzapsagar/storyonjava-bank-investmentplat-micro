@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.storyinvest.investment.repository.InvestmentPortfolioRepository;
+import com.storyinvest.investment.dto.InvestmentUpdateRequest;
 import com.storyinvest.investment.dto.TransactionEvent;
 import com.storyinvest.investment.entity.InvestmentPortfolio;
 
@@ -28,14 +29,14 @@ public class InvestmentPortfolioService {
 		InvestmentPortfolio portfolio = repository.findByAccountId(event.getAccountId()).orElseGet(() -> {
 			InvestmentPortfolio p = new InvestmentPortfolio();
 			p.setAccountId(event.getAccountId());
-			p.setInvestedAmount(0.0);
+			p.setAmount(0.0);
 			return p;
 		});
 
 		if ("CREDIT".equalsIgnoreCase(event.getTransactionType())) {
-			portfolio.setInvestedAmount(portfolio.getInvestedAmount() + event.getAmount());
+			portfolio.setAmount(portfolio.getAmount() + event.getAmount());
 		} else if ("DEBIT".equalsIgnoreCase(event.getTransactionType())) {
-			portfolio.setInvestedAmount(portfolio.getInvestedAmount() - event.getAmount());
+			portfolio.setAmount(portfolio.getAmount() - event.getAmount());
 		}
 
 		// portfolio.setLastUpdated(LocalDateTime.now());
@@ -51,4 +52,14 @@ public class InvestmentPortfolioService {
         return repository.findByTransactionId(transactionId)
                 .orElseThrow(() -> new RuntimeException("Investment not found"));
     }
+
+	public void BalanceUpdateRequest(InvestmentUpdateRequest investmentUpdateRequest) {
+		// TODO Auto-generated method stub
+		InvestmentPortfolio account = repository.findByAccountId(investmentUpdateRequest.getAccountId()).orElse(null);
+	}
+
+	public void updateInvestment(TransactionEvent event) {
+		// TODO Auto-generated method stub
+		
+	}
 }

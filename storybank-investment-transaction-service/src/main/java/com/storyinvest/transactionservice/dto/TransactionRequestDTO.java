@@ -1,68 +1,75 @@
 package com.storyinvest.transactionservice.dto;
 
+import com.storyinvest.transactionservice.enums.TransactionCategory;
+
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
 public class TransactionRequestDTO {
-	
-		@NotNull
-	    private Long accountId;   // Foreign key (from Account Service)
 
-	    @NotNull
-	    private String transactionType;  // CREDIT / DEBIT
+	@NotNull
+	private Long accountId;
 
-	    @Positive
-	    private Double amount;
-	    
-	    private String category; 
+	@NotNull
+	@Pattern(regexp = "CREDIT|DEBIT")
+	private String transactionType;
 
-	    private String description;
+	@NotNull
+	@Positive
+	private Double amount;
 
-		public Long getAccountId() {
-			return accountId;
-		}
+	@NotNull
+	private TransactionCategory category;
 
-		public void setAccountId(Long accountId) {
-			this.accountId = accountId;
-		}
+	@Size(max = 255)
+	private String description;
 
-		public String getTransactionType() {
-			return transactionType;
-		}
+	public Long getAccountId() {
+		return accountId;
+	}
 
-		public void setTransactionType(String transactionType) {
-			this.transactionType = transactionType;
-		}
+	public void setAccountId(Long accountId) {
+		this.accountId = accountId;
+	}
 
-		public Double getAmount() {
-			return amount;
-		}
+	public String getTransactionType() {
+		return transactionType;
+	}
 
-		public void setAmount(Double amount) {
-			this.amount = amount;
-		}
+	public void setTransactionType(String transactionType) {
+		this.transactionType = transactionType;
+	}
 
-		public String getCategory() {
-			return category;
-		}
+	public Double getAmount() {
+		return amount;
+	}
 
-		public void setCategory(String category) {
-			this.category = category;
-		}
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
 
-		public String getDescription() {
-			return description;
-		}
+	public TransactionCategory getCategory() {
+		return category;
+	}
 
-		public void setDescription(String description) {
-			this.description = description;
-		}
+	public void setCategory(TransactionCategory category) {
+		this.category = category;
+	}
 
-		@Override
-		public String toString() {
-			return "TransactionRequestDTO [accountId=" + accountId + ", transactionType=" + transactionType
-					+ ", amount=" + amount + ", category=" + category + ", description=" + description + "]";
-		}
+	public String getDescription() {
+		return description;
+	}
 
-	    
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	@Override
+	public String toString() {
+		return "TransactionRequestDTO [accountId=" + accountId + ", transactionType=" + transactionType + ", amount="
+				+ amount + ", category=" + category + ", description=" + description + "]";
+	}
+
 }

@@ -13,9 +13,12 @@ import io.github.resilience4j.retry.annotation.Retry;
 
 @Service
 public class AccountClient {
+	
+	private static final String ACCOUNTURI = "http://STORYBANK-INVESTMENT-ACCOUNT-SERVICE";
 
     private final RestTemplate restTemplate;
     int temp=1;
+    
     public AccountClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
@@ -26,7 +29,7 @@ public class AccountClient {
     		
     		System.out.println("---******------ "+temp++);
         return restTemplate.getForObject(
-            "http://STORYBANK-INVESTMENT-ACCOUNT-SERVICE/accounts/" + accountId,
+        		ACCOUNTURI+"/accounts/" + accountId,
             AccountResponseDTO.class
         );
     }

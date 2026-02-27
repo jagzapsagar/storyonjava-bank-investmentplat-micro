@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Service
 public class TransactionEventProducer {
 
-    private static final String TOPIC = "transaction-created-topic";
+    private static final String TRANSACTIONCREATEDTOPIC = "transaction-created-topic";
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
@@ -33,7 +33,7 @@ public class TransactionEventProducer {
     	mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
     	try {
 			String eventJson = mapper.writeValueAsString(event);
-			kafkaTemplate.send(TOPIC, eventJson);
+			kafkaTemplate.send(TRANSACTIONCREATEDTOPIC, eventJson);
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
