@@ -8,28 +8,40 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.storyinvest.authservice.dto.AuthRequest;
 import com.storyinvest.authservice.dto.AuthResponse;
+import com.storyinvest.authservice.dto.TokenValidationResponse;
 import com.storyinvest.authservice.dto.UserDTO;
 import com.storyinvest.authservice.service.AuthService;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
-	
+
 	private final AuthService authService;
 
-    public AuthController(AuthService authService) {
-        this.authService = authService;
-    }
+	public AuthController(AuthService authService) {
+		this.authService = authService;
+	}
 
-    @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody UserDTO userDTO) {
-        authService.register(userDTO.getUsername(), userDTO.getPassword(), userDTO.getRole());
-        return ResponseEntity.ok("User registered successfully");
-    }
+	@PostMapping("/register")
+	public ResponseEntity<String> register(@RequestBody UserDTO userDTO) {
+		authService.register(userDTO.getUsername(), userDTO.getPassword(), userDTO.getRole());
+		return ResponseEntity.ok("User registered successfully");
+	}
 
-    @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-        String token = authService.login(request.getUsername(), request.getPassword());
-        return ResponseEntity.ok(new AuthResponse(token));
-    }
+	@PostMapping("/login")
+	public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
+		String token = authService.login(request.getUsername(), request.getPassword());
+		return ResponseEntity.ok(new AuthResponse(token));
+	}
+
+	@PostMapping("/validate")
+	public ResponseEntity<TokenValidationResponse> validateToken(@RequestHeader("Authorization") String authHeader) {
+
+		String token = authHeader.substring(7); // remove Bearer
+
+		TokenValidationResponse response = authService.validateToken(token);
+
+		return ResponseEntity.ok(response);
+	}
 }
