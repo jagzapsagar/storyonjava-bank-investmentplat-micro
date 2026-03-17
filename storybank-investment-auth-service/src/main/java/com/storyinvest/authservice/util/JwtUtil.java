@@ -1,10 +1,14 @@
 package com.storyinvest.authservice.util;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
+
+import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -15,33 +19,64 @@ public class JwtUtil {
 
 	@Value("${jwt.expiration}")
 	private long expiration;
+	
+	private SecretKey getSigningKey() {
+        return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
 
 	public String generateToken(String username, String role) {
-		return Jwts.builder().setSubject(username).claim("role", role).setIssuedAt(new Date())
-				.setExpiration(new Date(System.currentTimeMillis() + expiration))
-				.signWith(Keys.hmacShaKeyFor(secret.getBytes()), SignatureAlgorithm.HS256).compact();
-	}
 
-	public String extractUsername(String token) {
-		return Jwts.parserBuilder().setSigningKey(secret.getBytes()).build().parseClaimsJws(token).getBody()
-				.getSubject();
-	}
-	
-	public String extractRole(String token) {
-	    return (String) Jwts.parserBuilder()
-	            .setSigningKey(secret.getBytes())
-	            .build()
-	            .parseClaimsJws(token)
-	            .getBody()
-	            .get("role");
-	}
+        SecretKey key = getSigningKey();
 
-	public boolean validateToken(String token) {
-		try {
-			Jwts.parserBuilder().setSigningKey(secret.getBytes()).build().parseClaimsJws(token);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
+        return Jwts.builder()
+                .subject(username)
+                .claim("role", role)
+                .issuedAt(new Date())
+                .expiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(key)
+                .compact();
+    }
+
+    public String extractUsername(String token) {
+
+        SecretKey key = getSigningKey();
+
+        Claims claims = Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        return claims.getSubject();
+    }
+
+    public String extractRole(String token) {
+
+        SecretKey key = getSigningKey();
+
+        Claims claims = Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        return claims.get("role", String.class);
+    }
+
+    public boolean validateToken(String token) {
+
+        SecretKey key = getSigningKey();
+
+        try {
+            Jwts.parser()
+                    .verifyWith(key)
+                    .build()
+                    .parseSignedClaims(token);
+
+            return true;
+
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
